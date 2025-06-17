@@ -2,18 +2,17 @@ package dev.joaov.service;
 
 import dev.joaov.domain.Anime;
 import dev.joaov.repository.AnimeHardCodedRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
-import java.util.Optional;
 
+@Service
+@RequiredArgsConstructor
 public class AnimeService {
-    private AnimeHardCodedRepository repository;
-
-    public AnimeService() {
-        this.repository = new AnimeHardCodedRepository();
-    }
+    private final AnimeHardCodedRepository repository;
 
     public List<Anime> findAll(String name) {
         return name == null ? repository.findAll() : repository.findByName(name);
