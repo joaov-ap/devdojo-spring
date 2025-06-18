@@ -1,44 +1,36 @@
 package dev.joaov.repository;
 
 import dev.joaov.domain.Anime;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Repository
+@RequiredArgsConstructor
 public class AnimeHardCodedRepository {
-    private static final List<Anime> ANIMES = new ArrayList<>();
-
-    static {
-        ANIMES.addAll(List.of(new Anime(1L, "Hunter X Hunter"),
-                new Anime(2L, "YuYu Hakusho"),
-                new Anime(3L, "One Piece"),
-                new Anime(4L, "Naruto"),
-                new Anime(5L, "Bleach")
-        ));
-    }
-
+    private final AnimeData animeData;
+    
     public List<Anime> findAll() {
-        return ANIMES;
+        return animeData.getAnimes();
     }
 
     public Optional<Anime> findById(Long id) {
-        return ANIMES.stream().filter(a -> a.getId().equals(id)).findFirst();
+        return animeData.getAnimes().stream().filter(a -> a.getId().equals(id)).findFirst();
     }
 
     public List<Anime> findByName(String name) {
-        return ANIMES.stream().filter(n -> n.getName().equalsIgnoreCase(name)).toList();
+        return animeData.getAnimes().stream().filter(n -> n.getName().equalsIgnoreCase(name)).toList();
     }
 
     public Anime save(Anime anime) {
-        ANIMES.add(anime);
+        animeData.getAnimes().add(anime);
         return anime;
     }
 
     public void delete(Anime anime) {
-        ANIMES.remove(anime);
+        animeData.getAnimes().remove(anime);
     }
 
     public void update(Anime anime) {

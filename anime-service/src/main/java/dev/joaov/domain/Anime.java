@@ -8,8 +8,7 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@AllArgsConstructor
-@NoArgsConstructor
+@Builder
 public class Anime {
     @EqualsAndHashCode.Include
     private Long id;
