@@ -1,5 +1,6 @@
 package dev.joaov.service;
 
+import dev.joaov.commons.ProducerUtils;
 import dev.joaov.domain.Producer;
 import dev.joaov.repository.ProducerHardCodedRepository;
 import org.assertj.core.api.Assertions;
@@ -13,7 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -23,17 +23,15 @@ import java.util.Optional;
 class ProducerServiceTest {
     @InjectMocks
     private ProducerService service;
-
+    @InjectMocks
+    private ProducerUtils producerUtils;
     @Mock
     private ProducerHardCodedRepository repository;
     private List<Producer> producerList;
 
     @BeforeEach
     void init() {
-        var ufotable = Producer.builder().id(1L).name("Ufotable").createdAt(LocalDateTime.now()).build();
-        var witStudio = Producer.builder().id(2L).name("Wit Studio").createdAt(LocalDateTime.now()).build();
-        var studioGhibli = Producer.builder().id(3L).name("Studio Ghibli").createdAt(LocalDateTime.now()).build();
-        producerList = new ArrayList<>(List.of(ufotable, witStudio, studioGhibli));
+        producerList = producerUtils.newProducerList();
     }
 
     @Test
@@ -97,7 +95,7 @@ class ProducerServiceTest {
     @DisplayName("save creates a producer")
     @Order(6)
     void save_CreatesProducer_WhenSuccessful() {
-        var producerToSave = Producer.builder().id(12L).name("MadHouse").createdAt(LocalDateTime.now()).build();
+        var producerToSave = producerUtils.newProducerToSave();
         BDDMockito.when(repository.save(producerToSave)).thenReturn(producerToSave);
 
         var savedProducer = service.save(producerToSave);
@@ -128,7 +126,7 @@ class ProducerServiceTest {
     }
 
     @Test
-    @DisplayName("delete removes a producer")
+    @DisplayName("update updates a producer")
     @Order(9)
     void update_UpdatesProducer_WhenSuccessful() {
         var producerToUpdate = producerList.getFirst();

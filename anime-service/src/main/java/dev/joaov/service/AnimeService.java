@@ -23,8 +23,7 @@ public class AnimeService {
     }
 
     public Anime save(Anime anime) {
-        repository.save(anime);
-        return anime;
+        return repository.save(anime);
     }
 
     public void delete(Long id) {

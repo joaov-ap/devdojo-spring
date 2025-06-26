@@ -1,5 +1,6 @@
 package dev.joaov.repository;
 
+import dev.joaov.commons.AnimeUtils;
 import dev.joaov.domain.Anime;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
@@ -9,7 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @ExtendWith(MockitoExtension.class)
@@ -17,18 +17,15 @@ import java.util.List;
 class AnimeHardCodedRepositoryTest {
     @InjectMocks
     private AnimeHardCodedRepository repository;
+    @InjectMocks
+    private AnimeUtils animeUtils;
     @Mock
     private AnimeData animeData;
     private List<Anime> animeList;
 
     @BeforeEach
     void init() {
-        var hunterXHunter = Anime.builder().id(1L).name("Hunter X Hunter").build();
-        var yuYuHakusho = Anime.builder().id(2L).name("YuYu Hakusho").build();
-        var onePiece = Anime.builder().id(3L).name("One Piece").build();
-        var naruto = Anime.builder().id(4L).name("Naruto").build();
-        var bleach = Anime.builder().id(5L).name("Bleach").build();
-        animeList = new ArrayList<> (List.of(hunterXHunter, yuYuHakusho, onePiece, naruto, bleach));
+        animeList = animeUtils.newAnimeList();
     }
 
     @Test
@@ -79,7 +76,7 @@ class AnimeHardCodedRepositoryTest {
     void save_CreatesAnime_WhenSuccessfull() {
         BDDMockito.when(animeData.getAnimes()).thenReturn(animeList);
 
-        var animeToSave = Anime.builder().id(15L).name("Hunter X Hunter").build();
+        var animeToSave = animeUtils.newAnimeToSave();
         var anime = repository.save(animeToSave);
         Assertions.assertThat(anime).isEqualTo(animeToSave).hasNoNullFieldsOrProperties();
 

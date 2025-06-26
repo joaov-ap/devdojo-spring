@@ -1,5 +1,6 @@
 package dev.joaov.service;
 
+import dev.joaov.commons.AnimeUtils;
 import dev.joaov.domain.Anime;
 import dev.joaov.repository.AnimeHardCodedRepository;
 import org.assertj.core.api.Assertions;
@@ -12,8 +13,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.swing.text.html.Option;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -23,19 +22,15 @@ import java.util.Optional;
 class AnimeServiceTest {
     @InjectMocks
     private AnimeService service;
-
+    @InjectMocks
+    private AnimeUtils animeUtils;
     @Mock
     private AnimeHardCodedRepository repository;
     private List<Anime> animeList;
 
     @BeforeEach
     void init() {
-        var hunterXHunter = Anime.builder().id(1L).name("Hunter X Hunter").build();
-        var yuYuHakusho = Anime.builder().id(2L).name("YuYu Hakusho").build();
-        var onePiece = Anime.builder().id(3L).name("One Piece").build();
-        var naruto = Anime.builder().id(4L).name("Naruto").build();
-        var bleach = Anime.builder().id(5L).name("Bleach").build();
-        animeList = new ArrayList<>(List.of(hunterXHunter, yuYuHakusho, onePiece, naruto, bleach));
+        animeList = animeUtils.newAnimeList();
     }
 
     @Test
