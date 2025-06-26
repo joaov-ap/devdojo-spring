@@ -1,11 +1,8 @@
 package dev.joaov.commons;
 
 import dev.joaov.domain.Anime;
-import dev.joaov.domain.Producer;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 

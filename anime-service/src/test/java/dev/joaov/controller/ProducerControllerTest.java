@@ -24,6 +24,7 @@ import java.util.List;
 @WebMvcTest(controllers = ProducerController.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 @ComponentScan("dev.joaov")
+//@ActiveProfiles("test")
 class ProducerControllerTest {
     private static final String URL = "/v1/producers";
     @Autowired
