@@ -6,16 +6,16 @@ import dev.joaov.repository.UserHardCodedRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -56,14 +56,93 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("findAll returns empty list when name is not found")
+    @Order(3)
+    void findAll_ReturnsEmptyList_WhenNameIsNotFound() {
+        var name = "not-found";
+        BDDMockito.when(repository.findByName(name)).thenReturn(Collections.emptyList());
+
+        var users = service.findAll(name);
+        Assertions.assertThat(users).isNotNull().isEmpty();
+    }
+
+    @Test
     @DisplayName("findById return an user with given id when user is found")
-    @Order(2)
+    @Order(4)
     void findById_ReturnUser_WhenIdIsFound() {
         var userExpected = userList.getFirst();
         BDDMockito.when(repository.findById(userExpected.getId())).thenReturn(Optional.of(userExpected));
 
         var user = service.findByIdOrThrowNotFound(userExpected.getId());
         Assertions.assertThat(user).isEqualTo(userExpected);
+    }
+
+    @Test
+    @DisplayName("findById throws ResponseStatusException when user id is not found")
+    @Order(4)
+    void findById_ThrowsResponseStatusException_WhenIdIsNotFound() {
+        var id = 99L;
+        BDDMockito.when(repository.findById(id)).thenReturn(Optional.empty());
+
+        Assertions.assertThatException()
+                .isThrownBy(() -> service.findByIdOrThrowNotFound(id))
+                .isInstanceOf(ResponseStatusException.class);
+    }
+
+    @Test
+    @DisplayName("save creates an user")
+    @Order(5)
+    void save_CreatesAnUser_WhenSuccessful() {
+        var userToSave = userUtils.newUserToSave();
+        BDDMockito.when(repository.save(userToSave)).thenReturn(userToSave);
+
+        var userSaved = service.save(userToSave);
+        Assertions.assertThat(userSaved).isEqualTo(userToSave).hasNoNullFieldsOrProperties();
+    }
+
+    @Test
+    @DisplayName("delete removes an user")
+    @Order(6)
+    void delete_RemovesAnUser_WhenSuccessful() {
+        var userToDelete = userList.getFirst();
+        BDDMockito.when(repository.findById(userToDelete.getId())).thenReturn(Optional.of(userToDelete));
+        BDDMockito.doNothing().when(repository).delete(userToDelete);
+
+        Assertions.assertThatNoException().isThrownBy(() -> service.delete(userToDelete.getId()));
+    }
+
+    @Test
+    @DisplayName("delete throws ResponseStatusException when user id is not found")
+    @Order(7)
+    void delete_ThrowsResponseStatusException_WhenIdIsNotFound() {
+        BDDMockito.when(repository.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.empty());
+
+        Assertions.assertThatException()
+                .isThrownBy(() -> service.delete(ArgumentMatchers.anyLong()))
+                .isInstanceOf(ResponseStatusException.class);
+    }
+
+    @Test
+    @DisplayName("update updates an user")
+    @Order(8)
+    void update_UpdatewsAnUser_WhenSuccessful() {
+        var userToUpdate = userList.getFirst();
+        BDDMockito.when(repository.findById(userToUpdate.getId())).thenReturn(Optional.of(userToUpdate));
+        BDDMockito.doNothing().when(repository).update(userToUpdate);
+
+        Assertions.assertThatNoException().isThrownBy(() -> service.update(userToUpdate));
+    }
+
+    @Test
+    @DisplayName("update throws ResponseStatusException when user id is not found")
+    @Order(9)
+    void update_ThrowsResponseStatusException_WhenIdIsNotFound() {
+        var userToUpdate = userList.getFirst();
+        BDDMockito.when(repository.findById(userToUpdate.getId())).thenReturn(Optional.empty());
+
+        Assertions.assertThatException()
+                .isThrownBy(() -> service.update(userToUpdate))
+                .isInstanceOf(ResponseStatusException.class);
     }
 
 }

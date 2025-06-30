@@ -1,0 +1,30 @@
+[
+  {
+    "id": 1,
+    "firstName": "Ging",
+    "lastName": "Freecss",
+    "email": "ging@gmail.com",
+    "createdAt": "2025-06-30T16:51:25.102379982"
+  },
+  {
+    "id": 2,
+    "firstName": "Isaac",
+    "lastName": "Netero",
+    "email": "isaac@gmail.com",
+    "createdAt": "2025-06-30T16:51:25.102379982"
+  },
+  {
+    "id": 3,
+    "firstName": "Beyond",
+    "lastName": "Netero",
+    "email": "beyond@gmail.com",
+    "createdAt": "2025-06-30T16:51:25.102379982"
+  },
+  {
+    "id": 4,
+    "firstName": "Linne",
+    "lastName": "Horsdoeuvre",
+    "email": "Horsdoeuvre",
+    "createdAt": "2025-06-30T16:51:25.102379982"
+  }
+]
