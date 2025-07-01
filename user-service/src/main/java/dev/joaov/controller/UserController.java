@@ -6,6 +6,7 @@ import dev.joaov.request.UserPutRequest;
 import dev.joaov.response.UserGetResponse;
 import dev.joaov.response.UserPostResponse;
 import dev.joaov.service.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,8 +18,8 @@ import java.util.List;
 @RequestMapping("v1/users")
 @RequiredArgsConstructor
 public class UserController {
-    private final UserMapper mapper;
     private final UserService service;
+    private final UserMapper mapper;
 
     @GetMapping
     public ResponseEntity<List<UserGetResponse>> findAll(@RequestParam(required = false) String name) {
@@ -35,7 +36,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserPostResponse> save(@RequestBody UserPostRequest userPostRequest) {
+    public ResponseEntity<UserPostResponse> save(@RequestBody @Valid UserPostRequest userPostRequest) {
         var user = mapper.toUser(userPostRequest);
         var userToSave = service.save(user);
         var userPostResponse = mapper.toUserPostResponse(userToSave);
@@ -49,7 +50,7 @@ public class UserController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> update(@RequestBody UserPutRequest userPutRequest) {
+    public ResponseEntity<Void> update(@RequestBody @Valid UserPutRequest userPutRequest) {
         var user = mapper.toUser(userPutRequest);
         service.update(user);
 

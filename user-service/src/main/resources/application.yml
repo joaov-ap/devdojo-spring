@@ -16,8 +16,4 @@ server:
   tomcat:
     threads:
       max: 20
-
-database:
-  url: ${DB_URL:localhost}:${DB_PORT:3306}
-  username: ${LOCAL_USERNAME:mysql}
-  password: ${LOCAL_PASSWORD:mysql}
+  port: 8090
