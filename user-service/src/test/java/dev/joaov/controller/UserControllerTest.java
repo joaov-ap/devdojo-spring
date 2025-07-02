@@ -237,7 +237,6 @@ class UserControllerTest {
     @DisplayName("PUT v1/users return bad request when fields are invalid")
     @Order(12)
     void update_ReturnsBadRequest_WhenFieldsAreInvalid(String fileName, List<String> errors) throws Exception {
-        BDDMockito.when(userData.getUserList()).thenReturn(userList);
         var request = fileUtils.readResourceFile("user/%s".formatted(fileName));
 
         var mvcResult = mockMvc.perform(MockMvcRequestBuilders
