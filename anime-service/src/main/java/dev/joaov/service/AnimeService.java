@@ -1,6 +1,7 @@
 package dev.joaov.service;
 
 import dev.joaov.domain.Anime;
+import dev.joaov.exception.NotFoundException;
 import dev.joaov.repository.AnimeHardCodedRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class AnimeService {
     }
 
     public Anime findByIdOrThrowNotFound(Long id) {
-        return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Anime not found"));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("Anime not found"));
     }
 
     public Anime save(Anime anime) {

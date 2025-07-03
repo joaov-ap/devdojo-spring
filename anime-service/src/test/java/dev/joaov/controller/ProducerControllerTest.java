@@ -110,9 +110,9 @@ class ProducerControllerTest {
     }
 
     @Test
-    @DisplayName("GET v1/producers/99 throws ResponseStatusException 404 when id is not found")
+    @DisplayName("GET v1/producers/99 throws NotFoundException 404 when id is not found")
     @Order(5)
-    void findById_ThrowResponseStatusException_WhenIdIsNotFound() throws Exception {
+    void findById_ThrowNotFoundException_WhenIdIsNotFound() throws Exception {
         BDDMockito.when(producerData.getProducers()).thenReturn(producerList);
         var id = 99L;
 
@@ -162,9 +162,9 @@ class ProducerControllerTest {
     }
 
     @Test
-    @DisplayName("PUT v1/producers throws ResponseStatusException when id is not found")
+    @DisplayName("PUT v1/producers throws NotFoundException when id is not found")
     @Order(8)
-    void update_ThrowResponseStatusException_WhenIdIsNotFound() throws Exception {
+    void update_ThrowNotFoundException_WhenIdIsNotFound() throws Exception {
         BDDMockito.when(producerData.getProducers()).thenReturn(producerList);
 
         var request = fileUtils.readResourceFile("producer/put-request-producer-404.json");
@@ -192,9 +192,9 @@ class ProducerControllerTest {
     }
 
     @Test
-    @DisplayName("DELETE v1/producers/99 throws ResponseStatusException when id is not found")
+    @DisplayName("DELETE v1/producers/99 throws NotFoundException when id is not found")
     @Order(10)
-    void delete_ThrowResponseStatusException_WhenIdIsNotFound() throws Exception {
+    void delete_ThrowNotFoundException_WhenIdIsNotFound() throws Exception {
         BDDMockito.when(producerData.getProducers()).thenReturn(producerList);
         var id = 99L;
 

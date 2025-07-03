@@ -1,6 +1,7 @@
 package dev.joaov.service;
 
 import dev.joaov.domain.User;
+import dev.joaov.exception.NotFoundException;
 import dev.joaov.repository.UserHardCodedRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class UserService {
     }
 
     public User findByIdOrThrowNotFound(Long id) {
-        return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("User not found"));
     }
 
     public User save(User user) {

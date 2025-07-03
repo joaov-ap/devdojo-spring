@@ -1,6 +1,7 @@
 package dev.joaov.service;
 
 import dev.joaov.domain.Producer;
+import dev.joaov.exception.NotFoundException;
 import dev.joaov.repository.ProducerHardCodedRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class ProducerService {
     }
 
     public Producer findByIdOrThrowNotFound(long id) {
-        return repository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Producer not found"));
+        return repository.findById(id).orElseThrow(() -> new NotFoundException("Producer not found"));
     }
 
     public Producer save(Producer producer) {
