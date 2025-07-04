@@ -4,9 +4,7 @@ import dev.joaov.domain.User;
 import dev.joaov.exception.NotFoundException;
 import dev.joaov.repository.UserHardCodedRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -16,7 +14,7 @@ public class UserService {
     private final UserHardCodedRepository repository;
 
     public List<User> findAll(String name) {
-        return name == null ? repository.findAll()  : repository.findByName(name);
+        return name == null ? repository.findAll() : repository.findByName(name);
     }
 
     public User findByIdOrThrowNotFound(Long id) {

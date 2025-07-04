@@ -111,12 +111,13 @@ class UserControllerTest {
     @Order(5)
     void findById_ThrowsNotFoundException_WhenIdIsNotFound() throws Exception {
         BDDMockito.when(userData.getUserList()).thenReturn(userList);
+        var response = fileUtils.readResourceFile("user/get-user-by-id-404.json");
         var id = 99L;
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{id}", id))
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
-                .andExpect(MockMvcResultMatchers.status().reason("User not found"));
+                .andExpect(MockMvcResultMatchers.content().json(response));
     }
 
     @Test
@@ -162,6 +163,7 @@ class UserControllerTest {
     void update_ThrowsNotFoundException_WhenIdIsNotFound() throws Exception {
         BDDMockito.when(userData.getUserList()).thenReturn(userList);
         var request = fileUtils.readResourceFile("user/put-request-user-404.json");
+        var response = fileUtils.readResourceFile("user/put-user-by-id-404.json");
 
         mockMvc.perform(MockMvcRequestBuilders
                         .put(URL)
@@ -170,7 +172,7 @@ class UserControllerTest {
                 )
                 .andDo(MockMvcResultHandlers.print())
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
-                .andExpect(MockMvcResultMatchers.status().reason("User not found"));
+                .andExpect(MockMvcResultMatchers.content().json(response));
     }
 
     @Test
@@ -186,8 +188,22 @@ class UserControllerTest {
     }
 
     @Test
-    @DisplayName("POST v1/users return bad request when fields are empty")
+    @DisplayName("DELETE v1/users/99 throws NotFoundException when id is not found")
     @Order(10)
+    void remove_ThrowsNotFoundException_WhenIdIsNotFound() throws Exception {
+        BDDMockito.when(userData.getUserList()).thenReturn(userList);
+        var response = fileUtils.readResourceFile("user/delete-user-by-id-404.json");
+        var id = 99;
+
+        mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{id}", id))
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().json(response));
+    }
+
+    @Test
+    @DisplayName("POST v1/users return bad request when fields are empty")
+    @Order(11)
     void save_ReturnsBadRequest_WhenFieldsAreEmpty() throws Exception {
         var request = fileUtils.readResourceFile("user/post-request-user-empty-fields-400.json");
 
@@ -213,7 +229,7 @@ class UserControllerTest {
     @ParameterizedTest
     @MethodSource("postUserBadRequestSource")
     @DisplayName("POST v1/users return bad request when fields are invalid")
-    @Order(11)
+    @Order(12)
     void save_ReturnsBadRequest_WhenFieldsAreInvalid(String fileName, List<String> errors) throws Exception {
         var request = fileUtils.readResourceFile("user/%s".formatted(fileName));
 
@@ -235,7 +251,7 @@ class UserControllerTest {
     @ParameterizedTest
     @MethodSource("putUserBadRequestSource")
     @DisplayName("PUT v1/users return bad request when fields are invalid")
-    @Order(12)
+    @Order(13)
     void update_ReturnsBadRequest_WhenFieldsAreInvalid(String fileName, List<String> errors) throws Exception {
         var request = fileUtils.readResourceFile("user/%s".formatted(fileName));
 
