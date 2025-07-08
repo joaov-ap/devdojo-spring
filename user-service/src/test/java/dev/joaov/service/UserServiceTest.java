@@ -3,6 +3,7 @@ package dev.joaov.service;
 import dev.joaov.commons.UserUtils;
 import dev.joaov.domain.User;
 import dev.joaov.repository.UserHardCodedRepository;
+import dev.joaov.repository.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,7 +26,7 @@ class UserServiceTest {
     @InjectMocks
     private UserUtils userUtils;
     @Mock
-    private UserHardCodedRepository repository;
+    private UserRepository repository;
     private List<User> userList;
 
     @BeforeEach
@@ -49,10 +50,10 @@ class UserServiceTest {
     void findAll_ReturnsUsersList_WhenNameIsNotNull() {
         var userExpected = userList.getFirst();
         var usersFound = Collections.singletonList(userExpected);
-        BDDMockito.when(repository.findByName(userExpected.getFirstName())).thenReturn(usersFound);
+        BDDMockito.when(repository.findByFirstNameIgnoreCase(userExpected.getFirstName())).thenReturn(usersFound);
 
         var users = service.findAll(userExpected.getFirstName());
-        Assertions.assertThat(users).isNotNull().containsAll(usersFound);
+        Assertions.assertThat(users).containsAll(usersFound);
     }
 
     @Test
@@ -60,7 +61,7 @@ class UserServiceTest {
     @Order(3)
     void findAll_ReturnsEmptyList_WhenNameIsNotFound() {
         var name = "not-found";
-        BDDMockito.when(repository.findByName(name)).thenReturn(Collections.emptyList());
+        BDDMockito.when(repository.findByFirstNameIgnoreCase(name)).thenReturn(Collections.emptyList());
 
         var users = service.findAll(name);
         Assertions.assertThat(users).isNotNull().isEmpty();
@@ -128,7 +129,7 @@ class UserServiceTest {
     void update_UpdatewsAnUser_WhenSuccessful() {
         var userToUpdate = userList.getFirst();
         BDDMockito.when(repository.findById(userToUpdate.getId())).thenReturn(Optional.of(userToUpdate));
-        BDDMockito.doNothing().when(repository).update(userToUpdate);
+        BDDMockito.when(repository.save(userToUpdate)).thenReturn(userToUpdate);
 
         Assertions.assertThatNoException().isThrownBy(() -> service.update(userToUpdate));
     }

@@ -2,7 +2,7 @@ package dev.joaov.service;
 
 import dev.joaov.domain.User;
 import dev.joaov.exception.NotFoundException;
-import dev.joaov.repository.UserHardCodedRepository;
+import dev.joaov.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,10 +11,10 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class UserService {
-    private final UserHardCodedRepository repository;
+    private final UserRepository repository;
 
-    public List<User> findAll(String name) {
-        return name == null ? repository.findAll() : repository.findByName(name);
+    public List<User> findAll(String firstName) {
+        return firstName == null ? repository.findAll() : repository.findByFirstNameIgnoreCase(firstName);
     }
 
     public User findByIdOrThrowNotFound(Long id) {
@@ -31,7 +31,7 @@ public class UserService {
 
     public void update(User user) {
         assertUserExists(user.getId());
-        repository.update(user);
+        repository.save(user);
     }
 
     private void assertUserExists(Long id) {

@@ -4,7 +4,7 @@ import dev.joaov.commons.FileUtils;
 import dev.joaov.commons.UserUtils;
 import dev.joaov.domain.User;
 import dev.joaov.repository.UserData;
-import dev.joaov.repository.UserHardCodedRepository;
+import dev.joaov.repository.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -17,9 +17,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
-import org.springframework.test.context.bean.override.mockito.MockitoSpyBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -40,8 +38,8 @@ class UserControllerTest {
     private FileUtils fileUtils;
     @Autowired
     private UserUtils userUtils;
-    @MockitoSpyBean
-    private UserHardCodedRepository repository;
+    @MockitoBean
+    private UserRepository repository;
     @MockitoBean
     private UserData userData;
     private List<User> userList;
@@ -55,7 +53,7 @@ class UserControllerTest {
     @DisplayName("GET v1/users returns a list with all users")
     @Order(1)
     void findAll_ReturnsAllUsers_WhenSuccessful() throws Exception {
-        BDDMockito.when(userData.getUserList()).thenReturn(userList);
+        BDDMockito.when(repository.findAll()).thenReturn(userList);
         var response = fileUtils.readResourceFile("user/get-user-null-name-200.json");
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL))
@@ -68,9 +66,11 @@ class UserControllerTest {
     @DisplayName("GET v1/users?name=Joao returns list with found object when name exists")
     @Order(2)
     void findAll_ReturnsFoundUserInList_WhenNameIsFound() throws Exception {
-        BDDMockito.when(userData.getUserList()).thenReturn(userList);
         var response = fileUtils.readResourceFile("user/get-user-ging-name-200.json");
         var name = "Ging";
+        var ging = userList.stream().filter(user -> user.getFirstName().equals(name)).findFirst().orElse(null);
+
+        BDDMockito.when(repository.findByFirstNameIgnoreCase(name)).thenReturn(Collections.singletonList(ging));
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL).param("name", name))
                 .andDo(MockMvcResultHandlers.print())
@@ -96,9 +96,11 @@ class UserControllerTest {
     @DisplayName("GET v1/users/1 returns User when id is found")
     @Order(4)
     void findById_ReturnUser_WhenIdIsFound() throws Exception {
-        BDDMockito.when(userData.getUserList()).thenReturn(userList);
         var response = fileUtils.readResourceFile("user/get-user-by-id-200.json");
         var id = 1L;
+        var firstUser = userList.stream().filter(user -> user.getId().equals(id)).findFirst();
+
+        BDDMockito.when(repository.findById(id)).thenReturn(firstUser);
 
         mockMvc.perform(MockMvcRequestBuilders.get(URL + "/{id}", id))
                 .andDo(MockMvcResultHandlers.print())
@@ -145,8 +147,10 @@ class UserControllerTest {
     @DisplayName("PUT v1/users updates an user")
     @Order(7)
     void update_UpdatesAnUser_WhenSuccessful() throws Exception {
-        BDDMockito.when(userData.getUserList()).thenReturn(userList);
         var request = fileUtils.readResourceFile("user/put-request-user-200.json");
+        var id = 1L;
+        var foundUser = userList.stream().filter(user -> user.getId().equals(id)).findFirst();
+        BDDMockito.when(repository.findById(id)).thenReturn(foundUser);
 
         mockMvc.perform(MockMvcRequestBuilders
                         .put(URL)
@@ -179,8 +183,9 @@ class UserControllerTest {
     @DisplayName("DELETE v1/users/1 removes an user")
     @Order(9)
     void remove_RemovesAnUser_WhenSuccessful() throws Exception {
-        BDDMockito.when(userData.getUserList()).thenReturn(userList);
         var id = userList.getFirst().getId();
+        var foundUser = userList.stream().filter(user -> user.getId().equals(id)).findFirst();
+        BDDMockito.when(repository.findById(id)).thenReturn(foundUser);
 
         mockMvc.perform(MockMvcRequestBuilders.delete(URL + "/{id}", id))
                 .andDo(MockMvcResultHandlers.print())

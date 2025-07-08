@@ -12,5 +12,4 @@ public class UserGetResponse {
     private String firstName;
     private String lastName;
     private String email;
-    private LocalDateTime createdAt;
 }
