@@ -1,10 +1,13 @@
 package dev.joaov.service;
 
 import dev.joaov.domain.User;
+import dev.joaov.exception.EmailExistsException;
 import dev.joaov.exception.NotFoundException;
 import dev.joaov.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -22,6 +25,7 @@ public class UserService {
     }
 
     public User save(User user) {
+        assertEmailDoesNotExist(user.getEmail());
         return repository.save(user);
     }
 
@@ -31,10 +35,23 @@ public class UserService {
 
     public void update(User user) {
         assertUserExists(user.getId());
+        assertEmailDoesNotExist(user.getEmail(), user.getId());
         repository.save(user);
     }
 
     private void assertUserExists(Long id) {
         findByIdOrThrowNotFound(id);
+    }
+
+    private void assertEmailDoesNotExist(String email) {
+        repository.findByEmail(email).ifPresent(this::throwEmailExistsException);
+    }
+
+    private void assertEmailDoesNotExist(String email, Long id) {
+        repository.findByEmailAndIdNot(email, id).ifPresent(this::throwEmailExistsException);
+    }
+
+    private void throwEmailExistsException(User user) {
+        throw new EmailExistsException("E-mail %s already exists".formatted(user.getEmail()));
     }
 }

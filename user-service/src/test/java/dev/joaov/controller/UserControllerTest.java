@@ -3,7 +3,6 @@ package dev.joaov.controller;
 import dev.joaov.commons.FileUtils;
 import dev.joaov.commons.UserUtils;
 import dev.joaov.domain.User;
-import dev.joaov.repository.UserData;
 import dev.joaov.repository.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
@@ -40,8 +39,6 @@ class UserControllerTest {
     private UserUtils userUtils;
     @MockitoBean
     private UserRepository repository;
-    @MockitoBean
-    private UserData userData;
     private List<User> userList;
 
     @BeforeEach
@@ -82,7 +79,6 @@ class UserControllerTest {
     @DisplayName("GET v1/users?name=x returns empty list when name is not found")
     @Order(3)
     void findAll_ReturnsEmptyList_WhenNameIsNotFound() throws Exception {
-        BDDMockito.when(userData.getUserList()).thenReturn(userList);
         var response = fileUtils.readResourceFile("user/get-user-x-name-200.json");
         var name = "x";
 
@@ -112,7 +108,6 @@ class UserControllerTest {
     @DisplayName("GET v1/users/99 throws NotFoundException when id is not found")
     @Order(5)
     void findById_ThrowsNotFoundException_WhenIdIsNotFound() throws Exception {
-        BDDMockito.when(userData.getUserList()).thenReturn(userList);
         var response = fileUtils.readResourceFile("user/get-user-by-id-404.json");
         var id = 99L;
 
@@ -165,7 +160,6 @@ class UserControllerTest {
     @DisplayName("PUT v1/users throws NotFoundException when id is not found")
     @Order(8)
     void update_ThrowsNotFoundException_WhenIdIsNotFound() throws Exception {
-        BDDMockito.when(userData.getUserList()).thenReturn(userList);
         var request = fileUtils.readResourceFile("user/put-request-user-404.json");
         var response = fileUtils.readResourceFile("user/put-user-by-id-404.json");
 
@@ -196,7 +190,6 @@ class UserControllerTest {
     @DisplayName("DELETE v1/users/99 throws NotFoundException when id is not found")
     @Order(10)
     void remove_ThrowsNotFoundException_WhenIdIsNotFound() throws Exception {
-        BDDMockito.when(userData.getUserList()).thenReturn(userList);
         var response = fileUtils.readResourceFile("user/delete-user-by-id-404.json");
         var id = 99;
 
