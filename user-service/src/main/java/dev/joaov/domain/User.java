@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class User {
     @EqualsAndHashCode.Include
     @Id

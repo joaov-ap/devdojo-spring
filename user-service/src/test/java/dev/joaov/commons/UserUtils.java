@@ -21,4 +21,8 @@ public class UserUtils {
     public User newUserToSave() {
         return User.builder().id(10L).firstName("Gon").lastName("Freecss").email("gon@gmail.com").build();
     }
+
+    public User newUserRepoToSave() {
+        return User.builder().firstName("Gon").lastName("Freecss").email("gon@gmail.com").build();
+    }
 }
