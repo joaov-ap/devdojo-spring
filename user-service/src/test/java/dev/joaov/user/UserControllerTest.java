@@ -1,9 +1,8 @@
-package dev.joaov.controller;
+package dev.joaov.user;
 
 import dev.joaov.commons.FileUtils;
 import dev.joaov.commons.UserUtils;
 import dev.joaov.domain.User;
-import dev.joaov.repository.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -28,7 +27,7 @@ import java.util.stream.Stream;
 
 @WebMvcTest(controllers = UserController.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@ComponentScan("dev.joaov")
+@ComponentScan(basePackages = {"dev.joaov.user", "dev.joaov.commons"})
 class UserControllerTest {
     private static final String URL = "/v1/users";
     @Autowired

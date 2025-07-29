@@ -1,10 +1,6 @@
-package dev.joaov.mapper;
+package dev.joaov.user;
 
 import dev.joaov.domain.User;
-import dev.joaov.request.UserPostRequest;
-import dev.joaov.request.UserPutRequest;
-import dev.joaov.response.UserGetResponse;
-import dev.joaov.response.UserPostResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingConstants;
 

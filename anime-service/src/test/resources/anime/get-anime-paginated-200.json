@@ -1,0 +1,49 @@
+{
+  "content": [
+    {
+      "id": 1,
+      "name": "Hunter X Hunter"
+    },
+    {
+      "id": 2,
+      "name": "YuYu Hakusho"
+    },
+    {
+      "id": 3,
+      "name": "One Piece"
+    },
+    {
+      "id": 4,
+      "name": "Naruto"
+    },
+    {
+      "id": 5,
+      "name": "Bleach"
+    }
+  ],
+  "pageable": {
+    "pageNumber": 0,
+    "pageSize": 5,
+    "sort": {
+      "empty": true,
+      "sorted": false,
+      "unsorted": true
+    },
+    "offset": 0,
+    "paged": true,
+    "unpaged": false
+  },
+  "last": true,
+  "totalPages": 1,
+  "totalElements": 5,
+  "first": true,
+  "size": 5,
+  "number": 0,
+  "sort": {
+    "empty": true,
+    "sorted": false,
+    "unsorted": true
+  },
+  "numberOfElements": 5,
+  "empty": false
+}

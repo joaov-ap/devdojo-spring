@@ -1,13 +1,10 @@
-package dev.joaov.service;
+package dev.joaov.user;
 
 import dev.joaov.domain.User;
 import dev.joaov.exception.EmailExistsException;
 import dev.joaov.exception.NotFoundException;
-import dev.joaov.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -24,6 +21,7 @@ public class UserService {
         return repository.findById(id).orElseThrow(() -> new NotFoundException("User not found"));
     }
 
+//    @Transactional(rollbackFor = Exception.class)
     public User save(User user) {
         assertEmailDoesNotExist(user.getEmail());
         return repository.save(user);

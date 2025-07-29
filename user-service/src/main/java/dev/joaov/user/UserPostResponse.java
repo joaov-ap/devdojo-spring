@@ -1,13 +1,11 @@
-package dev.joaov.response;
+package dev.joaov.user;
 
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDateTime;
-
 @Data
 @Builder
-public class UserGetResponse {
+public class UserPostResponse {
     private Long id;
     private String firstName;
     private String lastName;

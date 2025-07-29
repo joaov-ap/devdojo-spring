@@ -1,4 +1,4 @@
-package dev.joaov.repository;
+package dev.joaov.user;
 
 import dev.joaov.commons.UserUtils;
 import org.assertj.core.api.Assertions;

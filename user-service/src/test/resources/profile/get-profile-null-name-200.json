@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1,
+    "name": "Ging Freecss",
+    "description": "Strong fighter, one of the best Nen conjurators"
+  },
+  {
+    "id": 2,
+    "name": "Isaac",
+    "description": "Ex Hunter Association Boss, one of the strongest man in the world"
+  },
+  {
+    "id": 3,
+    "name": "Beyond",
+    "description": "Isaac's son, one of the best Nen conjurators"
+  },
+  {
+    "id": 4,
+    "name": "Linne",
+    "description": "Ex partner of Isaac, one of the best Nen conjurators"
+  }
+]

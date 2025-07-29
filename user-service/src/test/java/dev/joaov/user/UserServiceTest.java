@@ -1,9 +1,8 @@
-package dev.joaov.service;
+package dev.joaov.user;
 
 import dev.joaov.commons.UserUtils;
 import dev.joaov.domain.User;
 import dev.joaov.exception.EmailExistsException;
-import dev.joaov.repository.UserRepository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;

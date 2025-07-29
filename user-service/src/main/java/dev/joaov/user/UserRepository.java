@@ -1,4 +1,4 @@
-package dev.joaov.repository;
+package dev.joaov.user;
 
 import dev.joaov.domain.User;
 import org.springframework.data.jpa.repository.JpaRepository;

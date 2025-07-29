@@ -1,11 +1,5 @@
-package dev.joaov.controller;
+package dev.joaov.user;
 
-import dev.joaov.mapper.UserMapper;
-import dev.joaov.request.UserPostRequest;
-import dev.joaov.request.UserPutRequest;
-import dev.joaov.response.UserGetResponse;
-import dev.joaov.response.UserPostResponse;
-import dev.joaov.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
