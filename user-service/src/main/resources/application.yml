@@ -17,6 +17,7 @@ spring:
 logging:
   level:
     dev.joaov: debug
+    net.ttddyy.dsproxy.listener: debug
 
 server:
   servlet:
